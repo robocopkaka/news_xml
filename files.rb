@@ -27,15 +27,14 @@ arr[0,1].each do |link|
 	  file.each do |content|
 	    data = file.read(content) #reads the content of the file
 	    @doc = Nokogiri::XML(data) #Nokogiri parses the contents of data
-	    if redis.lrem('NEWS_XML',1, @doc) == 0
-			redis.rpush 'NEWS_XML', @doc # pushes the content of the file to the NEWS_XML list if it wasn't already there
-		end
+	    redis.lrem('NEWS_XML',1, @doc) == 0
+		redis.rpush 'NEWS_XML', @doc # pushes the content of the file to the NEWS_XML list if it wasn't already ther
 	    #puts @doc.css("post_url")
 	    # Do whatever you want with the contents
 	  end
 	end
 end
-puts redis.lrange('NEWS_XML',0,2)
+#puts redis.lrange('NEWS_XML',0,2)
 puts redis.llen 'NEWS_XML'
 # puts arr.inspect
 # download = open("http://feed.omgili.com/5Rh5AMTrc4Pv/mainstream/posts/#{link}")
